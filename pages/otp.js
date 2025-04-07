@@ -22,7 +22,7 @@ export default function OTPPage() {
       backgroundColor: "#000",
       color: "#fff",
       fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-      minHeight: "200vh", // ✅ Fix added here
+      minHeight: "100vh", // ✅ Fix added here for full-screen background
       boxSizing: "border-box"
     }}>
       <div style={{ padding: "16px 0 10px", borderBottom: "1px solid #222", textAlign: "center" }}>

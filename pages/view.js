@@ -26,7 +26,7 @@ export default function ViewPage({ content }) {
       padding: "20px",
       fontFamily: "monospace",
       whiteSpace: "pre-wrap",
-      minHeight: "200vh", // ✅ Fix added here
+      minHeight: "100vh", // ✅ Fix added here for full-screen background
       boxSizing: "border-box"
     }}>
       <h2>📄 data.txt contents</h2>
