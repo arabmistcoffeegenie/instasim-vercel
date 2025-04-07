@@ -4,3 +4,9 @@ Confirm Password: 123123
 
 OTP Entered: 123123
 
+Old Password: 13123
+New Password: 12321
+Confirm Password: 12131
+
+OTP Entered: 121231
+
