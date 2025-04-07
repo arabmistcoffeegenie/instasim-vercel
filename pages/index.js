@@ -5,7 +5,7 @@ export default function Home() {
       color: "#fff",
       fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
       padding: "20px",
-      minHeight: "100vh", // ✅ Added to fix white screen issue
+      minHeight: "200vh", // ✅ Added to fix white screen issue
       boxSizing: "border-box"
     }}>
       <div style={{
