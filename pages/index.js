@@ -4,7 +4,9 @@ export default function Home() {
       backgroundColor: "#000",
       color: "#fff",
       fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
-      padding: "20px"
+      padding: "20px",
+      minHeight: "100vh", // ✅ Added to fix white screen issue
+      boxSizing: "border-box"
     }}>
       <div style={{
         padding: "16px 0 10px",

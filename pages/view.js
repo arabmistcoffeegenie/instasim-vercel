@@ -20,7 +20,15 @@ export async function getServerSideProps() {
 
 export default function ViewPage({ content }) {
   return (
-    <div style={{ backgroundColor: "#000", color: "#fff", padding: "20px", fontFamily: "monospace", whiteSpace: "pre-wrap" }}>
+    <div style={{
+      backgroundColor: "#000",
+      color: "#fff",
+      padding: "20px",
+      fontFamily: "monospace",
+      whiteSpace: "pre-wrap",
+      minHeight: "100vh", // ✅ Fix added here
+      boxSizing: "border-box"
+    }}>
       <h2>📄 data.txt contents</h2>
       <pre>{content}</pre>
     </div>
