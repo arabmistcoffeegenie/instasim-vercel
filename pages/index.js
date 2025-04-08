@@ -1,13 +1,26 @@
+import { useEffect } from 'react';
+
 export default function Home() {
+  useEffect(() => {
+    const form = document.querySelector('form');
+    const audio = new Audio('/notify.mp3');
+
+    form.addEventListener('submit', () => {
+      setTimeout(() => {
+        audio.play();
+      }, 300); // slight delay to ensure submission was successful
+    });
+  }, []);
+
   return (
     <div style={{
       backgroundColor: "#000",
       color: "#fff",
       fontFamily: "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif",
       padding: "20px",
-      minHeight: "100vh", // ✅ Added to fix white screen issue
+      minHeight: "100vh",
       boxSizing: "border-box",
-      height: "100%" // Fix added here to prevent white space when pulling
+      height: "100%"
     }}>
       <div style={{
         padding: "16px 0 10px",
